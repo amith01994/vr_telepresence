@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                     try{
 
                         outputStream.write(et_cmd.getText().toString().getBytes());
+                        outputStream.flush();
 
                     }catch (Exception ex){
                         Toast.makeText(getApplicationContext(), "[Error]"+ex,Toast.LENGTH_SHORT).show();
