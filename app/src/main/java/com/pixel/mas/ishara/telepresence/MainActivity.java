@@ -3,9 +3,14 @@ package com.pixel.mas.ishara.telepresence;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -30,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     OutputStream outputStream;
     InputStream inputStream;
 
+    //sensor
+
+
     private BluetoothAdapter blueadapt;
     private Set<BluetoothDevice> pairedDevices;
     private BluetoothSocket socket;
@@ -45,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         btn_discon = (Button) findViewById(R.id.btn_discon);
         listView = (ListView) findViewById(R.id.blu_list);
         et_cmd = (EditText) findViewById(R.id.et_cmd);
+
 
         btn_connect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,8 +71,10 @@ public class MainActivity extends AppCompatActivity {
                 if(outputStream != null){
                     try{
 
-                        outputStream.write(et_cmd.getText().toString().getBytes());
-                        outputStream.flush();
+
+
+//                        outputStream.write(et_cmd.getText().toString().getBytes());
+//                        outputStream.flush();
 
                     }catch (Exception ex){
                         Toast.makeText(getApplicationContext(), "[Error]"+ex,Toast.LENGTH_SHORT).show();
@@ -92,15 +103,26 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String address = (String)addrlist.get(i);
                 try{
-                    BluetoothDevice btDevice = blueadapt.getRemoteDevice(address);
-                    Toast.makeText(getApplicationContext(), "Connecting to Bluetooth address:"+address,Toast.LENGTH_SHORT).show();
-                    socket = btDevice.createRfcommSocketToServiceRecord((btDevice.getUuids()[0]).getUuid());
-                    socket.connect();
-                    outputStream = socket.getOutputStream();
-                    inputStream = socket.getInputStream();
+
+
+
+
+                    Intent mServiceIntent = new Intent(MainActivity.this, BluetoothService.class);
+
+                    mServiceIntent.setData(Uri.parse(address));
+                    startService(mServiceIntent);
+
+
+//                    BluetoothDevice btDevice = blueadapt.getRemoteDevice(address);
+//                    Toast.makeText(getApplicationContext(), "Connecting to Bluetooth address:"+address,Toast.LENGTH_SHORT).show();
+//                    socket = btDevice.createRfcommSocketToServiceRecord((btDevice.getUuids()[0]).getUuid());
+//                    socket.connect();
+//                    outputStream = socket.getOutputStream();
+//                    inputStream = socket.getInputStream();
                     //outputStream.write("10,20,30".getBytes());
-                    BluetoothService blue_background = new BluetoothService(outputStream, inputStream);
+                    //BluetoothService blue_background = new BluetoothService(outputStream, inputStream);
                 }catch (Exception e){
+                    Log.d("INTEND ERROR",e.toString());
                     Toast.makeText(getApplicationContext(), "[Error]"+e,Toast.LENGTH_SHORT).show();
 
                 }
@@ -140,11 +162,5 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void bindService(){
 
-        Intent service_intent = new Intent(this, BluetoothService.class);
-        startService(service_intent);
-        //bindService(service_intent,);
-
-    }
 }

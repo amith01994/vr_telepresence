@@ -27,11 +27,14 @@
         android:id="@+id/blu_list"
         android:layout_width="306dp"
         android:layout_height="340dp"
-        tools:layout_editor_absoluteX="39dp"
-        tools:layout_editor_absoluteY="136dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="56dp" />
+        android:layout_marginBottom="35dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginStart="39dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_msg"
@@ -45,6 +48,7 @@
         android:layout_toEndOf="@+id/et_cmd"
         android:layout_toRightOf="@+id/et_cmd"
         android:text="Send Msg"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/blu_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/et_cmd"
@@ -65,6 +69,7 @@
         android:ems="10"
         android:hint="Add the command that you want to send"
         android:inputType="textPersonName"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/blu_list"
         app:layout_constraintEnd_toStartOf="@+id/btn_msg"
         app:layout_constraintStart_toStartOf="parent"
