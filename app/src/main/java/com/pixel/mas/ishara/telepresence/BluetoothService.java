@@ -27,40 +27,46 @@ import java.util.Set;
  * Created by ishara on 1/22/18.
  */
 
-public class BluetoothService extends IntentService implements SensorEventListener{
+public class BluetoothService extends Service implements SensorEventListener{
     OutputStream outputStream;
     InputStream inputStream;
     private SensorManager mSensorManager;
     private Sensor mSensor;
+    String address = "";
 
     private BluetoothAdapter blueadapt;
 
     private BluetoothSocket socket;
 
-
-
-    public BluetoothService(String name) {
-        super(name);
+    public BluetoothService() {
+        super();
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+
+
+
+
+    }
+    public BluetoothService(String address) {
+        super();
+
+//        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+//        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+//        this.address = address;
+
+
+
+
     }
 
 
-    @Nullable
     @Override
-    public IBinder onBind(Intent intent) {
+    public void onCreate() {
+        super.onCreate();
 
-
-        return null;
-    }
-
-    @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        String address = intent.getDataString();
         Log.d("INTEND ERROR","Starting Intent");
         blueadapt = BluetoothAdapter.getDefaultAdapter();
-
         try{
             BluetoothDevice btDevice = blueadapt.getRemoteDevice(address);
             Toast.makeText(getApplicationContext(), "Connecting to Bluetooth address:"+address,Toast.LENGTH_SHORT).show();
@@ -71,16 +77,18 @@ public class BluetoothService extends IntentService implements SensorEventListen
             Toast.makeText(getApplicationContext(), "[-]Error:"+address,Toast.LENGTH_SHORT).show();
 
         }
-
-
-
-//                    socket.connect();
-
-//                    socket.connect();
-//                    outputStream = socket.getOutputStream();
-//                    inputStream = socket.getInputStream();
-
     }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+
+
+
+        return null;
+    }
+
+
 
     public void write(String s) throws IOException {
 

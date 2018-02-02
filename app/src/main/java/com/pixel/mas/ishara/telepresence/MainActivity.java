@@ -102,15 +102,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String address = (String)addrlist.get(i);
+                Intent mServiceIntent = new Intent(MainActivity.this, BluetoothService.class);
+                mServiceIntent.putExtra("address", address);
+
+                //mServiceIntent.setData(Uri.parse(address));
+                startService(mServiceIntent);
                 try{
 
 
 
 
-                    Intent mServiceIntent = new Intent(MainActivity.this, BluetoothService.class);
 
-                    mServiceIntent.setData(Uri.parse(address));
-                    startService(mServiceIntent);
 
 
 //                    BluetoothDevice btDevice = blueadapt.getRemoteDevice(address);
