@@ -165,8 +165,10 @@ public class BluetoothService extends Service implements SensorEventListener{
             write(x + "," + y + "," + z);
         }catch (IOException ex){
             Toast.makeText(getApplicationContext(), "[-]Error:"+ex,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "[-]Error:"+ex,Toast.LENGTH_SHORT).show();
         }catch (Exception ex){
-            Toast.makeText(getApplicationContext(), "[-]Error"+ex,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "[-]Error:"+ex,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "[-]Error"+ex,Toast.LENGTH_SHORT).show();
         }
 
 
