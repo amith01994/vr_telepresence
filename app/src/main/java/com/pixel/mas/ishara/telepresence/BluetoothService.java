@@ -37,11 +37,7 @@ public class BluetoothService extends Service implements SensorEventListener{
     private Sensor mSensor;
     String address = null;
 
-    private final float[] mAccelerometerReading = new float[3];
-    private final float[] mMagnetometerReading = new float[3];
 
-    private final float[] mRotationMatrix = new float[9];
-    private final float[] mOrientationAngles = new float[3];
 
     private BluetoothAdapter blueadapt;
 
@@ -62,19 +58,25 @@ public class BluetoothService extends Service implements SensorEventListener{
 
         Log.d("INTENDERROR0","Starting Intent");
         blueadapt = BluetoothAdapter.getDefaultAdapter();
+
         this.address = intent.getStringExtra("bluetooth_address");
 
         try{
             if(address != null){
                 BluetoothDevice btDevice = blueadapt.getRemoteDevice(address);
                 Toast.makeText(getApplicationContext(), "Connecting to Bluetooth address:"+address,Toast.LENGTH_SHORT).show();
-                socket = btDevice.createRfcommSocketToServiceRecord((btDevice.getUuids()[0]).getUuid());
-                outputStream = socket.getOutputStream();
-                inputStream = socket.getInputStream();
+                this.socket = btDevice.createRfcommSocketToServiceRecord((btDevice.getUuids()[0]).getUuid());
+                this.outputStream = socket.getOutputStream();
+                this.inputStream = socket.getInputStream();
 
             }else{
                 Toast.makeText(getApplicationContext(), "[-]Address Value:"+address,Toast.LENGTH_SHORT).show();
+                this.stopSelf();
 
+            }
+            if(outputStream == null){
+                this.stopSelf();
+                Toast.makeText(getApplicationContext(), "Bluetooth connection terminated",Toast.LENGTH_SHORT).show();
             }
 
         }catch (IOException ex){
@@ -136,9 +138,10 @@ public class BluetoothService extends Service implements SensorEventListener{
 
 
     public void write(String s) throws IOException {
-
-            outputStream.write(s.getBytes());
-            outputStream.flush();
+        if(this.outputStream != null){
+            this.outputStream.write(s.getBytes());
+            this.outputStream.flush();
+        }
 
 
     }
@@ -164,12 +167,13 @@ public class BluetoothService extends Service implements SensorEventListener{
         try{
             write(x + "," + y + "," + z);
         }catch (IOException ex){
-            Toast.makeText(getApplicationContext(), "[-]Error:"+ex,Toast.LENGTH_SHORT).show();
+            Log.d("[-]OUTPUTX",ex.toString());
             //Toast.makeText(getApplicationContext(), "[-]Error:"+ex,Toast.LENGTH_SHORT).show();
         }catch (Exception ex){
-            Toast.makeText(getApplicationContext(), "[-]Error:"+ex,Toast.LENGTH_SHORT).show();
+            Log.d("[-]OUTPUTX",ex.toString());
             //Toast.makeText(getApplicationContext(), "[-]Error"+ex,Toast.LENGTH_SHORT).show();
         }
+
 
 
 
