@@ -3,11 +3,11 @@ package com.pixel.mas.ishara.telepresence;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
-import android.net.Uri;
+import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +17,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextClock;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.InputStream;
@@ -29,11 +31,24 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
     Button btn_discon;
     Button btn_connect;
-    Button btn_sendmsg;
+    TextView tv_x;
+    TextView tv_y;
+    TextView tv_z;
+
+    Intent mServiceIntent;
+    sensorReceive sensorreceive;
     ListView listView;
-    EditText et_cmd;
+
     OutputStream outputStream;
     InputStream inputStream;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(mServiceIntent);
+    }
+
+
 
     //sensor
 
@@ -45,14 +60,31 @@ public class MainActivity extends AppCompatActivity {
     ArrayList addrlist;
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        sensorreceive = new sensorReceive();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BluetoothService.MY_ACTION);
+        registerReceiver(sensorreceive, intentFilter);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         btn_connect = (Button) findViewById(R.id.btn_bluetooth);
-        btn_sendmsg = (Button) findViewById(R.id.btn_msg);
+
         btn_discon = (Button) findViewById(R.id.btn_discon);
         listView = (ListView) findViewById(R.id.blu_list);
-        et_cmd = (EditText) findViewById(R.id.et_cmd);
+        tv_x = (TextView) findViewById(R.id.x_view);
+        tv_y = (TextView) findViewById(R.id.y_view);
+        tv_z = (TextView) findViewById(R.id.z_view);
+
+
+
+
+
 
 
         btn_connect.setOnClickListener(new View.OnClickListener() {
@@ -65,27 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        btn_sendmsg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(outputStream != null){
-                    try{
 
-
-
-//                        outputStream.write(et_cmd.getText().toString().getBytes());
-//                        outputStream.flush();
-
-                    }catch (Exception ex){
-                        Toast.makeText(getApplicationContext(), "[Error]"+ex,Toast.LENGTH_SHORT).show();
-                    }
-
-                }else{
-                    Toast.makeText(getApplicationContext(), "[Error]:Bro you need to connect first",Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
         btn_discon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,13 +113,15 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String address = (String)addrlist.get(i);
-                Intent mServiceIntent = new Intent(MainActivity.this, BluetoothService.class);
-                mServiceIntent.putExtra("address", address);
 
-                //mServiceIntent.setData(Uri.parse(address));
-                startService(mServiceIntent);
                 try{
+                    String address = (String)addrlist.get(i);
+
+                    mServiceIntent = new Intent(MainActivity.this, BluetoothService.class);
+                    mServiceIntent.putExtra("bluetooth_address", address);
+
+                    //mServiceIntent.setData(Uri.parse(address));
+                    startService(mServiceIntent);
 
 
 
@@ -126,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 }catch (Exception e){
                     Log.d("INTEND ERROR",e.toString());
                     Toast.makeText(getApplicationContext(), "[Error]"+e,Toast.LENGTH_SHORT).show();
+                    Log.d("CRASH","[Error]"+e);
 
                 }
                 //BluetoothDevice btDevice = blueadapt.getRemoteDevice(address);
@@ -159,6 +174,29 @@ public class MainActivity extends AppCompatActivity {
 
         }else{
             Toast.makeText(getApplicationContext(), "[-]No Paired devices Found!",Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+    private class sensorReceive extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context arg0, Intent arg1) {
+            // TODO Auto-generated method stub
+            String datapassedx = arg1.getStringExtra("DATAPASSEDX");
+            String datapassedy = arg1.getStringExtra("DATAPASSEDY");
+            String datapassedz = arg1.getStringExtra("DATAPASSEDZ");
+
+
+//            String datapassedx = "" + arg1.getIntExtra("DATAPASSEDX", 0);
+//            String datapassedy = "" + arg1.getIntExtra("DATAPASSEDY", 0);
+//            String datapassedz = "" + arg1.getIntExtra("DATAPASSEDZ", 0);
+            Log.d("VALUEREC","X:" + String.valueOf(datapassedx) + ",Y:" + String.valueOf(datapassedy)+",Z:" + String.valueOf(datapassedz));
+            tv_x.setText("X:" + datapassedx);
+            tv_y.setText("Y:" + datapassedy);
+            tv_z.setText("Z:" + datapassedz);
+
+
 
         }
 
