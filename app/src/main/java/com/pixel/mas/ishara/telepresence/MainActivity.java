@@ -207,6 +207,22 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.BLUETOOTH_ADMIN)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+                    Manifest.permission.BLUETOOTH_ADMIN)) {
+
+            } else {
+
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.BLUETOOTH_ADMIN},
+                        1);
+
+            }
+        }
     }
 
     private void initBlue(){

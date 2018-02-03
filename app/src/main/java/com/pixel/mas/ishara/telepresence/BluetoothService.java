@@ -138,9 +138,11 @@ public class BluetoothService extends Service implements SensorEventListener{
 
 
     public void write(String s) throws IOException {
-        if(this.outputStream != null){
+        if(this.outputStream != null && socket.isConnected()){
             this.outputStream.write(s.getBytes());
             this.outputStream.flush();
+        }else {
+            socket.connect();
         }
 
 
