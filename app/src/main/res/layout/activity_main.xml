@@ -88,4 +88,19 @@
         app:layout_constraintStart_toEndOf="@+id/x_view"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/btn_stream"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="22dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="16dp"
+        android:text="Open Stream"
+        app:layout_constraintBottom_toTopOf="@+id/y_view"
+        app:layout_constraintEnd_toStartOf="@+id/btn_discon"
+        app:layout_constraintStart_toEndOf="@+id/btn_bluetooth"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
 </android.support.constraint.ConstraintLayout>

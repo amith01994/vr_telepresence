@@ -118,7 +118,7 @@ public class BluetoothService extends Service implements SensorEventListener{
     public void onCreate() {
         super.onCreate();
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
         broadcase_intent = new Intent();
 
 
@@ -151,9 +151,9 @@ public class BluetoothService extends Service implements SensorEventListener{
     @Override
     public void onSensorChanged(SensorEvent sensorEvent){
 
-        Float x =  sensorEvent.values[0] * 180;
-        Float y =  sensorEvent.values[1] * 180;
-        Float z =  sensorEvent.values[2] * 180;
+        Float x =  sensorEvent.values[0] ;
+        Float y =  sensorEvent.values[1] ;
+        Float z =  sensorEvent.values[2] ;
         Log.d("INTENDERROR","Starting IntentSensorChange");
         Log.d("SENSOR0","" + x);
         Log.d("SENSOR1","" + y);
@@ -167,7 +167,8 @@ public class BluetoothService extends Service implements SensorEventListener{
         sendBroadcast(broadcase_intent);
 
         try{
-            write(x + "," + y + "," + z);
+            write(x + "z"+ z);
+
         }catch (IOException ex){
             Log.d("[-]OUTPUTX",ex.toString());
             //Toast.makeText(getApplicationContext(), "[-]Error:"+ex,Toast.LENGTH_SHORT).show();

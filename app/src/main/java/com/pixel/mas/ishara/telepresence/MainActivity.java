@@ -1,6 +1,7 @@
 package com.pixel.mas.ishara.telepresence;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -10,12 +11,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -36,6 +39,7 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
     Button btn_discon;
     Button btn_connect;
+    Button btn_stream;
     TextView tv_x;
     TextView tv_y;
     TextView tv_z;
@@ -76,20 +80,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT < 16) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }else{
+
+        }
         requestPermission();
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         btn_connect = (Button) findViewById(R.id.btn_bluetooth);
-
+        btn_stream = (Button)findViewById(R.id.btn_stream);
         btn_discon = (Button) findViewById(R.id.btn_discon);
         listView = (ListView) findViewById(R.id.blu_list);
         tv_x = (TextView) findViewById(R.id.x_view);
         tv_y = (TextView) findViewById(R.id.y_view);
         tv_z = (TextView) findViewById(R.id.z_view);
 
+        btn_stream.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent stream_intent = new Intent(MainActivity.this,Stream.class);
+                startActivity(stream_intent);
 
-
-
+            }
+        });
 
 
 
