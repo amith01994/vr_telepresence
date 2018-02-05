@@ -10,14 +10,17 @@
         android:id="@+id/z_view"
         android:layout_width="108dp"
         android:layout_height="47dp"
+        android:layout_marginBottom="14dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="8dp"
         android:text="Z"
         android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_discon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/y_view"
-        app:layout_constraintTop_toBottomOf="@+id/btn_discon" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
 
     <Button
         android:id="@+id/btn_bluetooth"
@@ -25,55 +28,79 @@
         android:layout_height="48dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginEnd="148dp"
+        android:layout_marginEnd="60dp"
         android:layout_marginStart="8dp"
-        android:layout_marginRight="148dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="196dp"
         android:text="Find Pairs"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/btn_discon"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/blu_list"
-        android:layout_width="306dp"
+        android:layout_width="305dp"
         android:layout_height="298dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="35dp"
         android:layout_marginEnd="39dp"
         android:layout_marginStart="39dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="290dp" />
 
 
     <Button
         android:id="@+id/btn_discon"
         android:layout_width="110dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginTop="196dp"
         android:text="Disconnect"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toEndOf="@+id/btn_bluetooth"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/x_view"
         android:layout_width="108dp"
         android:layout_height="47dp"
+        android:layout_marginBottom="14dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="8dp"
         android:text="X"
         android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_bluetooth"
         app:layout_constraintEnd_toStartOf="@+id/y_view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_bluetooth" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+
+    <Button
+        android:id="@+id/btn_stream"
+        android:layout_width="120dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="27dp"
+        android:text="Open Stream"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/eturl"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/eturl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="17dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="27dp"
+        android:ems="10"
+        android:hint="URL"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/btn_stream"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/y_view"
@@ -81,26 +108,11 @@
         android:layout_height="47dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="86dp"
+        android:layout_marginTop="132dp"
         android:text="Y"
         android:textSize="30sp"
         app:layout_constraintEnd_toStartOf="@+id/z_view"
         app:layout_constraintStart_toEndOf="@+id/x_view"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btn_stream"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="22dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="16dp"
-        android:text="Open Stream"
-        app:layout_constraintBottom_toTopOf="@+id/y_view"
-        app:layout_constraintEnd_toStartOf="@+id/btn_discon"
-        app:layout_constraintStart_toEndOf="@+id/btn_bluetooth"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>

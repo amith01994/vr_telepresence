@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     Intent mServiceIntent;
     sensorReceive sensorreceive;
     ListView listView;
+    EditText eturl;
 
     OutputStream outputStream;
     InputStream inputStream;
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         btn_stream = (Button)findViewById(R.id.btn_stream);
         btn_discon = (Button) findViewById(R.id.btn_discon);
         listView = (ListView) findViewById(R.id.blu_list);
+        eturl = (EditText)findViewById(R.id.eturl);
         tv_x = (TextView) findViewById(R.id.x_view);
         tv_y = (TextView) findViewById(R.id.y_view);
         tv_z = (TextView) findViewById(R.id.z_view);
@@ -101,10 +103,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent stream_intent = new Intent(MainActivity.this,Stream.class);
+                stream_intent.putExtra("URL_PASS","http://" + eturl.getText().toString());
                 startActivity(stream_intent);
 
             }
         });
+
 
 
 
@@ -280,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
 //            String datapassedx = "" + arg1.getIntExtra("DATAPASSEDX", 0);
 //            String datapassedy = "" + arg1.getIntExtra("DATAPASSEDY", 0);
 //            String datapassedz = "" + arg1.getIntExtra("DATAPASSEDZ", 0);
-            Log.d("VALUEREC","X:" + String.valueOf(datapassedx) + ",Y:" + String.valueOf(datapassedy)+",Z:" + String.valueOf(datapassedz));
+            Log.d("VALUEREC","X:" + datapassedx + ",Y:" + datapassedy+",Z:" + datapassedz);
             tv_x.setText("X:" + datapassedx);
             tv_y.setText("Y:" + datapassedy);
             tv_z.setText("Z:" + datapassedz);

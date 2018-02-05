@@ -35,7 +35,13 @@ public class BluetoothService extends Service implements SensorEventListener{
     Intent broadcase_intent;
     private SensorManager mSensorManager;
     private Sensor mSensor;
+    private Sensor acceSensor;
     String address = null;
+
+    Float x = (float)0;
+    Float y= (float)0;
+    Float z= (float)0;
+    Float zaccel= (float)0;
 
 
 
@@ -88,7 +94,9 @@ public class BluetoothService extends Service implements SensorEventListener{
 
 
 
+
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
         return super.onStartCommand(intent, flags, startId);
 
 
@@ -119,6 +127,8 @@ public class BluetoothService extends Service implements SensorEventListener{
         super.onCreate();
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        acceSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        //acceSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         broadcase_intent = new Intent();
 
 
@@ -150,24 +160,46 @@ public class BluetoothService extends Service implements SensorEventListener{
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent){
+        Sensor source = sensorEvent.sensor;
+        if(source.getType() == Sensor.TYPE_ACCELEROMETER){
+            x =  sensorEvent.values[0] ;
+            y =  sensorEvent.values[1] ;
+            z =  sensorEvent.values[2] ;
+            broadcase_intent.setAction(MY_ACTION);
+            broadcase_intent.putExtra("DATAPASSEDX", ""+x);
+            broadcase_intent.putExtra("DATAPASSEDY", ""+y);
+            broadcase_intent.putExtra("DATAPASSEDZ", ""+z);
+            sendBroadcast(broadcase_intent);
 
-        Float x =  sensorEvent.values[0] ;
-        Float y =  sensorEvent.values[1] ;
-        Float z =  sensorEvent.values[2] ;
+
+        }
+        if(source.getType() == Sensor.TYPE_ORIENTATION){
+           zaccel =  sensorEvent.values[2] ;
+
+        }
+
+
+
+
+
+
+
+
+
+
         Log.d("INTENDERROR","Starting IntentSensorChange");
         Log.d("SENSOR0","" + x);
         Log.d("SENSOR1","" + y);
         Log.d("SENSOR2","" + z);
+        //Log.d("SENSORACCEL","" + zaccel);
 
 
-        broadcase_intent.setAction(MY_ACTION);
-        broadcase_intent.putExtra("DATAPASSEDX", ""+x);
-        broadcase_intent.putExtra("DATAPASSEDY", ""+y);
-        broadcase_intent.putExtra("DATAPASSEDZ", ""+z);
-        sendBroadcast(broadcase_intent);
+
+
+
 
         try{
-            write(x + "z"+ z);
+            write(x + "z"+ z + "z" + zaccel);
 
         }catch (IOException ex){
             Log.d("[-]OUTPUTX",ex.toString());
