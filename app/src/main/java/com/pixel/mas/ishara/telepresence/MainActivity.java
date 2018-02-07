@@ -146,13 +146,6 @@ public class MainActivity extends AppCompatActivity {
 
                     //mServiceIntent.setData(Uri.parse(address));
                     startService(mServiceIntent);
-
-
-
-
-
-
-
 //                    BluetoothDevice btDevice = blueadapt.getRemoteDevice(address);
 //                    Toast.makeText(getApplicationContext(), "Connecting to Bluetooth address:"+address,Toast.LENGTH_SHORT).show();
 //                    socket = btDevice.createRfcommSocketToServiceRecord((btDevice.getUuids()[0]).getUuid());
