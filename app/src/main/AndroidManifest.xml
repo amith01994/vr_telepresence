@@ -38,6 +38,9 @@
         <service
             android:name=".BluetoothService"
             />
+        <service
+            android:name=".Accelometer"
+            />
     </application>
 
 </manifest>

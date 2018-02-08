@@ -5,8 +5,10 @@ import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -37,6 +39,7 @@ public class BluetoothService extends Service implements SensorEventListener{
     private Sensor mSensor;
     private Sensor acceSensor;
     String address = null;
+    BluetoothService.sensorReceive sensorreceive;
 
     Float x = (float)0;
     Float y= (float)0;
@@ -49,6 +52,7 @@ public class BluetoothService extends Service implements SensorEventListener{
 
     private BluetoothSocket socket;
     final static String MY_ACTION = "VALUE_UPDATE";
+    final static String MY_ACTION_ACCL = "ACCEL_DATA";
 
     public BluetoothService() {
         super();
@@ -93,9 +97,18 @@ public class BluetoothService extends Service implements SensorEventListener{
         }
 
 
+        sensorreceive = new BluetoothService.sensorReceive();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BluetoothService.MY_ACTION_ACCL);
+        registerReceiver(sensorreceive, intentFilter);
+
+
 
 
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        //mSensorManager.registerListener(this, acceSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        Intent accelo_service = new Intent(getApplicationContext(), Accelometer.class);
+        startService(accelo_service);
 
         return super.onStartCommand(intent, flags, startId);
 
@@ -118,7 +131,7 @@ public class BluetoothService extends Service implements SensorEventListener{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mSensorManager.unregisterListener(this);
+
 
     }
 
@@ -127,7 +140,6 @@ public class BluetoothService extends Service implements SensorEventListener{
         super.onCreate();
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-        acceSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         //acceSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         broadcase_intent = new Intent();
 
@@ -161,7 +173,7 @@ public class BluetoothService extends Service implements SensorEventListener{
     @Override
     public void onSensorChanged(SensorEvent sensorEvent){
         Sensor source = sensorEvent.sensor;
-        if(source.getType() == Sensor.TYPE_ACCELEROMETER){
+        if(source.getType() == Sensor.TYPE_ORIENTATION){
             x =  sensorEvent.values[0] ;
             y =  sensorEvent.values[1] ;
             z =  sensorEvent.values[2] ;
@@ -173,10 +185,13 @@ public class BluetoothService extends Service implements SensorEventListener{
 
 
         }
-        if(source.getType() == Sensor.TYPE_ORIENTATION){
-           zaccel =  sensorEvent.values[2] ;
-
-        }
+//        if(source.getType() == Sensor.TYPE_ACCELEROMETER){
+//           zaccel =  sensorEvent.values[2] ;
+//            broadcase_intent.putExtra("DATAPASSEDX", ""+x);
+//            broadcase_intent.putExtra("DATAPASSEDY", ""+y);
+//            broadcase_intent.putExtra("DATAPASSEDZ", ""+z);
+//
+//        }
 
 
 
@@ -191,7 +206,7 @@ public class BluetoothService extends Service implements SensorEventListener{
         Log.d("SENSOR0","" + x);
         Log.d("SENSOR1","" + y);
         Log.d("SENSOR2","" + z);
-        //Log.d("SENSORACCEL","" + zaccel);
+        Log.d("SENSORACCEL","" + zaccel);
 
 
 
@@ -200,6 +215,7 @@ public class BluetoothService extends Service implements SensorEventListener{
 
         try{
             write(x + "z"+ z + "z" + zaccel);
+            Log.d("BLUETOOTHOUT","" + x + "z"+ z + "z" + zaccel);
 
         }catch (IOException ex){
             Log.d("[-]OUTPUTX",ex.toString());
@@ -220,6 +236,28 @@ public class BluetoothService extends Service implements SensorEventListener{
     public void onAccuracyChanged(Sensor sensor, int i) {
         Log.d("INTENDERROR","Starting Accuracy");
 
+
+    }
+    private class sensorReceive extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context arg0, Intent arg1) {
+            // TODO Auto-generated method stub
+            String datapassedax = arg1.getStringExtra("DATAPASSEDAX");
+            String datapasseday = arg1.getStringExtra("DATAPASSEDAY");
+            String datapassedaz = arg1.getStringExtra("DATAPASSEDAZ");
+            zaccel = Float.valueOf(datapassedaz);
+
+
+//            String datapassedx = "" + arg1.getIntExtra("DATAPASSEDX", 0);
+//            String datapassedy = "" + arg1.getIntExtra("DATAPASSEDY", 0);
+//            String datapassedz = "" + arg1.getIntExtra("DATAPASSEDZ", 0);
+            Log.d("VALUERECACCEL","X:" + datapassedax + ",Y:" + datapasseday+",Z:" + datapassedaz);
+
+
+
+
+        }
 
     }
 }

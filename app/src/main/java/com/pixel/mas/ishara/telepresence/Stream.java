@@ -31,17 +31,23 @@ public class Stream extends Activity{
     WebView webview;
     ProgressBar progress;
     String URL = "http://192.168.8.158:5000";
-    int PIC_WIDTH =  750;
+    int PIC_WIDTH =  1000;
     boolean lock = false;
 
     public Stream(){
 
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        webview.loadUrl(URL);
+        //webview.loadUrl(URL);
         webview.refreshDrawableState();
     }
 
@@ -49,8 +55,9 @@ public class Stream extends Activity{
     protected void onStart() {
 
         super.onStart();
-        webview.loadUrl(URL);
-        webview.refreshDrawableState();
+        init_webview();
+
+
 
 
 
@@ -75,14 +82,8 @@ public class Stream extends Activity{
     private void init_webview(){
         webview = (WebView)findViewById(R.id.web_view);
         progress = (ProgressBar)findViewById(R.id.progress);
-        webview.setPadding(0, 0, 0, 0);
-        webview.setInitialScale(getScale());
-        webview.setVerticalScrollBarEnabled(false);
-        webview.setHorizontalScrollBarEnabled(false);
-        webview.clearCache(true);
-        webview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webview.getSettings().setPluginState(WebSettings.PluginState.ON_DEMAND);
-        webview.getSettings().setLoadsImagesAutomatically(true);
+        this.URL = getIntent().getStringExtra("URL_PASS");
+
         if(Build.VERSION.SDK_INT > 20){
             webview.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
@@ -92,6 +93,9 @@ public class Stream extends Activity{
                 super.onPageFinished(view, url);
                 Log.d("STREAM", "Loading complete reloading the URL");
                 progress.setVisibility(View.INVISIBLE);
+                webview.clearCache(true);
+                //webview.reload();
+                webview.loadUrl(URL);
 
             }
 
@@ -116,7 +120,16 @@ public class Stream extends Activity{
             }
         });
         webview.getSettings().setJavaScriptEnabled(true);
+
+        webview.setPadding(0, 0, 0, 0);
+        webview.setInitialScale(getScale());
+        webview.setVerticalScrollBarEnabled(false);
+        webview.setHorizontalScrollBarEnabled(false);
+        webview.clearCache(true);
+        webview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webview.getSettings().setPluginState(WebSettings.PluginState.ON_DEMAND);
         webview.getSettings().setLoadsImagesAutomatically(true);
+
 
 
         webview.getSettings().setDomStorageEnabled(true);
@@ -125,15 +138,21 @@ public class Stream extends Activity{
         webview.getSettings().setDatabaseEnabled(true);
         webview.getSettings().setDatabasePath(getApplicationContext().getFilesDir().getAbsolutePath() + "/databases");
         webview.getSettings().setAllowFileAccess(true);
+        webview.refreshDrawableState();
 
         webview.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-//                webview.clearCache(true);
-//                webview.reload();
+                webview.clearCache(true);
+                //webview.reload();
+                webview.loadUrl(URL);
                 return false;
             }
         });
+        //webview.loadUrl(URL);
+        //webview.stopLoading();
+
+
 
 
     }
