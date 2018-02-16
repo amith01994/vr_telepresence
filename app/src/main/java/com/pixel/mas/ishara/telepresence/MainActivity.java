@@ -44,7 +44,13 @@ public class MainActivity extends AppCompatActivity {
     TextView tv_y;
     TextView tv_z;
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     Intent mServiceIntent;
+    Intent stream_intent;
     sensorReceive sensorreceive;
     ListView listView;
     EditText eturl;
@@ -58,9 +64,11 @@ public class MainActivity extends AppCompatActivity {
         stopService(mServiceIntent);
     }
 
-
-
-    //sensor
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+//sensor
 
 
     private BluetoothAdapter blueadapt;
@@ -76,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothService.MY_ACTION);
         registerReceiver(sensorreceive, intentFilter);
+
     }
 
     @Override
@@ -102,9 +111,10 @@ public class MainActivity extends AppCompatActivity {
         btn_stream.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent stream_intent = new Intent(MainActivity.this,Stream.class);
+                stream_intent = new Intent(MainActivity.this,Stream.class);
                 stream_intent.putExtra("URL_PASS","http://" + eturl.getText().toString());
                 startActivity(stream_intent);
+
 
             }
         });
@@ -127,6 +137,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     socket.close();
+                    if(mServiceIntent != null){
+                        stopService(mServiceIntent);
+                    }
                 }catch (Exception ex){
                     Toast.makeText(getApplicationContext(), "[Error]:Can't close the socket connection",Toast.LENGTH_SHORT).show();
                 }

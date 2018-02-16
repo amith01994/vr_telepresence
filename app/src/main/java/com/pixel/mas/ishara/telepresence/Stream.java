@@ -39,17 +39,7 @@ public class Stream extends Activity{
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //webview.loadUrl(URL);
-        webview.refreshDrawableState();
-    }
 
     @Override
     protected void onStart() {
@@ -72,6 +62,7 @@ public class Stream extends Activity{
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.stream);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 
 
@@ -79,6 +70,29 @@ public class Stream extends Activity{
 
 
     }
+
+    @Override
+    public void onPause() {
+        webview.onPause();
+        webview.pauseTimers();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        webview.resumeTimers();
+        webview.onResume();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        webview.destroy();
+        webview = null;
+        super.onDestroy();
+    }
+
     private void init_webview(){
         webview = (WebView)findViewById(R.id.web_view);
         progress = (ProgressBar)findViewById(R.id.progress);
@@ -122,7 +136,7 @@ public class Stream extends Activity{
         webview.getSettings().setJavaScriptEnabled(true);
 
         webview.setPadding(0, 0, 0, 0);
-        webview.setInitialScale(getScale());
+        //webview.setInitialScale(getScale());
         webview.setVerticalScrollBarEnabled(false);
         webview.setHorizontalScrollBarEnabled(false);
         webview.clearCache(true);
