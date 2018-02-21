@@ -109,7 +109,8 @@ public class Stream extends Activity{
                 progress.setVisibility(View.INVISIBLE);
                 webview.clearCache(true);
                 //webview.reload();
-                webview.loadUrl(URL);
+                //webview.loadUrl(URL);
+                Toast.makeText(getApplicationContext(),"Loading Complete",Toast.LENGTH_SHORT);
 
             }
 
