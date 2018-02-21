@@ -187,66 +187,70 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.BLUETOOTH)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                    Manifest.permission.BLUETOOTH)) {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.BLUETOOTH},
+                    1);
 
-            } else {
-
-                ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.BLUETOOTH},
-                        1);
-
-            }
+//
+//            // Should we show an explanation?
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+//                    Manifest.permission.BLUETOOTH)) {
+//
+//            } else {
+//
+//                ActivityCompat.requestPermissions(MainActivity.this,
+//                        new String[]{Manifest.permission.BLUETOOTH},
+//                        1);
+//
+//            }
         }
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.BODY_SENSORS)
                 != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.BODY_SENSORS},
+                    1);
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                    Manifest.permission.BODY_SENSORS)) {
-
-            } else {
-
-                ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.BODY_SENSORS},
-                        1);
-
-            }
+//            // Should we show an explanation?
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+//                    Manifest.permission.BODY_SENSORS)) {
+//
+//            } else {
+//
+//                ActivityCompat.requestPermissions(MainActivity.this,
+//                        new String[]{Manifest.permission.BODY_SENSORS},
+//                        1);
+//
+//            }
         }
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.INTERNET)
                 != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.INTERNET},
+                    1);
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                    Manifest.permission.INTERNET)) {
 
-            } else {
-
-                ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.INTERNET},
-                        1);
-
-            }
         }
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.BLUETOOTH_ADMIN)
                 != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.BLUETOOTH_ADMIN},
+                    1);
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                    Manifest.permission.BLUETOOTH_ADMIN)) {
-
-            } else {
-
-                ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.BLUETOOTH_ADMIN},
-                        1);
-
-            }
+//            // Should we show an explanation?
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+//                    Manifest.permission.BLUETOOTH_ADMIN)) {
+//
+//            } else {
+//
+//                ActivityCompat.requestPermissions(MainActivity.this,
+//                        new String[]{Manifest.permission.BLUETOOTH_ADMIN},
+//                        1);
+//
+//            }
         }
     }
 
